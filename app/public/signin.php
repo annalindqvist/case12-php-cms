@@ -63,6 +63,7 @@ if ($_POST) {
 <body>
     
     <h1><?= $title ?></h1>
+    <a href="signup.php">Sign up</a>
 
     <?php
     new DisplayDBVersion();

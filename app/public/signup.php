@@ -16,7 +16,6 @@ $user_template = new User();
 $title = "Sign up";
 
 if ($_POST) {
-    //print_r($_POST);
     
     $email = $_POST['email'];
     $pass = $_POST['password'];
@@ -24,7 +23,7 @@ if ($_POST) {
     $lastname = $_POST['lastname'];
     
 
-    if ($email == "" || $pass == "" || $firstname = "" || $lastname = "") {
+    if ($email == "" || $pass == "" || $firstname == "" || $lastname == "") {
         echo "Some field is empty.";
 
     } else {
@@ -80,14 +79,19 @@ if ($_POST) {
     ?>
 
     <form action="" method="post">
+
         <label for="email">Email</label>
         <input type="email" name="email" id="email">
+
         <label for="password">Password</label>
         <input type="password" name="password" id="password">
-        <label for="firstname"></label>
+
+        <label for="firstname">Firstname</label>
         <input type="text" name="firstname" id="firstname">
-        <label for="lastname"></label>
+
+        <label for="lastname">Lastname</label>
         <input type="text" name="lastname" id="lastname">
+
         <input type="submit" value="Sign up">
     </form>
 

@@ -8,7 +8,7 @@ class User extends Database
         parent::__construct();
     }
 
-    // add user to db
+    // add user to db, only adds email and password to db, why not firstname and lastname??
     public function insertOne($email, $pass, $firstname, $lastname)
     {
         try {
