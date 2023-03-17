@@ -1,1 +1,39 @@
-# case12-php-cms
+# Case 12 - Fullstack PHP
+I caset ska en applikation kodas som lagrar data i en relationsdatabas. Applikationen fungerar för att en administratör ska kunna skriva och publicera enklare sidor eller blogg-inlägg förslagsvis kallad `Page`.
+
+## Grundläggande krav
+- Programspråk som får användas är PHP (utan ramverk), Javascript, HTML/CSS
+- Visa alla hemsidor som är publicerade genom applikationen
+- Sidor skall återfinnas i en enkel meny
+- Administratör skall kunna:
+  - Loggas in
+  - Registera sig
+  - Läsa, skapa, editera och ta bort resurs
+  - Lösenordet skall vara kryperad innan det lagras i databasen
+- Pages tabellen skall:
+  - Ha minst fyra databas-kolumner utöver primary key (t.ex title, content, created_at, site_id)
+  - Vara länkad på databasnivå till en användare
+  - Hantera markdown (Det fungerar att spara ner det som text och låta klienten parsa markdown till html)
+- Besökare skall kunna:
+  - Besöka olika sidor t.ex "thewebapp.com?id=about" och "thewebapp.com?id=contact" alternativt med friendly urls "thewebapp.com/page/about" och "thewebapp.com/page/contact"
+  
+## Utmaning
+Utöver alla grundläggande krav:
+- Applikationen ska vara publicerad via Linode eller liknande hosting tjänst
+- Administratör ska kunna spara Page som draft
+- Sidor ska kunna hantera bilder
+- Sidor skall återfinnas i en hierarkisk meny
+- Integrera en JavaScript WYSIWYG editor för innehållet i content fältet ex. https://editorjs.io/ eller https://www.tiny.cloud/
+- Besökare skall kunna registera sig som intresserad av nyhetsbrev
+ 
+## Feedback
+Veckan efter presentation kommer feedback ges under följande rubriker:
+
+- Databas-hantering
+- Användarupplevelse
+- Allmän kodstil
+
+*Designfeedback tillkommer från Mattias*
+
+## Presentation- och Inlämningsdatum
+Presenteras och inlämning för feedback är den 4:e april kl 8.45. Tiden 4e till 6de april är feedbackperiod då ni får feedback, ni kan under tiden jobba med er portfolio och göra klart gamla case.

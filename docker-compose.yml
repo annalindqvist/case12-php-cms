@@ -1,0 +1,36 @@
+version: '3'
+services:
+    apache:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ./app/public:/var/www/html
+            - ./configs/custom-apache2.conf:/etc/apache2/apache2.conf
+            - ./configs/custom-php.ini:/usr/local/etc/php/php.ini
+        ports:
+            - "8088:80"
+    mysql:
+        image: mariadb:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: 'db_root_password'
+            MYSQL_USER: 'db_user'
+            MYSQL_PASSWORD: 'db_password'
+            MYSQL_DATABASE: 'cms-db'
+        volumes:
+            - mysqldata:/var/lib/mysql
+        ports:
+            - 33061:3306
+        
+    # phpMyAdmin https://www.phpmyadmin.net/
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - 8089:80
+        environment:
+            - PMA_ARBITRARY=1
+        depends_on:
+            - mysql
+volumes:
+    mysqldata: {}                      
