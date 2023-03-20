@@ -6,10 +6,10 @@ I caset ska en applikation kodas som lagrar data i en relationsdatabas. Applikat
 - Visa alla hemsidor som är publicerade genom applikationen
 - Sidor skall återfinnas i en enkel meny
 - Administratör skall kunna:
-  - Loggas in
-  - Registera sig
+  - Loggas in [x]
+  - Registera sig [x]
   - Läsa, skapa, editera och ta bort resurs
-  - Lösenordet skall vara kryperad innan det lagras i databasen
+  - Lösenordet skall vara kryperad innan det lagras i databasen [x]
 - Pages tabellen skall:
   - Ha minst fyra databas-kolumner utöver primary key (t.ex title, content, created_at, site_id)
   - Vara länkad på databasnivå till en användare

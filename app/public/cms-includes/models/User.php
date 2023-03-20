@@ -8,18 +8,38 @@ class User extends Database
         parent::__construct();
     }
 
-    // add user to db, only adds email and password to db, why not firstname and lastname??
-    public function insertOne($email, $pass, $firstname, $lastname)
+    // setup table user if not exists - make sure this code runs in signup.php ?
+    public function setup()
+    {
+        $schema = "CREATE TABLE IF NOT EXISTS `cms-db`.`user` (
+            `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            `email` VARCHAR(100) NOT NULL,
+            `password` VARCHAR(45) NOT NULL,
+            `firstname` VARCHAR(45) NOT NULL,
+            `lastname` VARCHAR(45) NOT NULL,
+            `admin` TINYINT(1) NULL DEFAULT 0,
+            PRIMARY KEY (`user_id`))
+          ENGINE = InnoDB";
+        $stmt = $this->db->prepare($schema);
+        return $stmt->execute();
+    }
+
+    public function selectAll()
+    {
+        $sql = "SELECT * FROM user";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // add user to db
+    public function insertOne($email, $hash_pass, $firstname, $lastname)
     {
         try {
-            $sql = "INSERT INTO `user` (`user_id`, `email`, `password`, `firstname`, `lastname`, `admin`) VALUES (NULL, '$email', '$pass', '$firstname', '$lastname', '0')";
+            $sql = "INSERT INTO `user` (`user_id`, `email`, `password`, `firstname`, `lastname`, `admin`) VALUES (NULL, '$email', '$hash_pass', '$firstname', '$lastname', '0')";
             $stmt = $this->db->prepare($sql);
-            // $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-            // $stmt->bindValue(':pass', $pass, PDO::PARAM_STR);
-            // $stmt->bindValue(':firstname', $firstname, PDO::PARAM_STR);
-            // $stmt->bindValue(':lastname', $lastname, PDO::PARAM_STR);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->execute();
 
         } catch (\Throwable $th) {
             throw $th;
@@ -57,13 +77,21 @@ class User extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findOne($email, $password)
-    {
-        $sql = "SELECT * FROM user WHERE email='$email' AND password='$password'";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+
+    // create funtion that match password to found user[email]
+    //  if (password_verify($password, $user['password'])){
+    // public function matchPass($email, $password)
+    // {
+    //     // $sql = "SELECT * FROM user WHERE email='$email' AND password='$password'";
+       
+    //     $sql = "SELECT * FROM user WHERE email='$email'";
+    //     $stmt = $this->db->prepare($sql);
+    //     $stmt->execute();
+
+
+
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
 
 }
 

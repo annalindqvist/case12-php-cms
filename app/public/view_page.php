@@ -4,20 +4,26 @@ session_start();
 include_once 'cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
+require_once "Parsedown.php";
 
 if(!isset($_SESSION['auth'])) {
     header('Location: signin.php');	
 }
 
-// use Temmplate
-$åage = new Page();
+$page_id = $_GET['id'];
 
-if(isset($_SESSION['firstname'])) {
-    $firstname = $_SESSION['firstname'];
+// use Template
+$page = new Page();
+
+if ($page_id) {
+    $all_pages = $page->selectAll();
+    $chosen_page = $page->findOne($page_id);
+
 } else {
-    // else because all users don't have firstname at this moment
-    $firstname = "";
-}
+    echo "Something went wrong.";
+} 
+
+
 
 
 // use Database
@@ -26,7 +32,7 @@ if(isset($_SESSION['firstname'])) {
 // $database = new Database();
 
 
-$title = "Dashboard";
+$title = "The website";
 
 ?>
 
@@ -42,10 +48,30 @@ $title = "Dashboard";
 <body>
 
     <?php include ROOT . '/cms-includes/partials/header.php'; ?>
-    
-    <h1><?= $title ?></h1>
-    <h2><?= $firstname ?></h2>
-    <a href="signout.php">Sign out</a>
+
+    <?php
+
+    // make this to a menu of all pages
+    function print_ul_li($all_pages)
+    {
+        echo "<ul>";
+        foreach ($all_pages as $page) {
+            echo "<li>", 
+                    "<p>", $page['page_name'], "</p>",
+                 "</li>";
+        }
+        echo "</ul>";
+    }
+    print_ul_li($all_pages);
+    ?>
+
+    <?php 
+        $Parsedown = new Parsedown();
+        //print_r($chosen_page); array in array..
+        $html = $Parsedown->text($chosen_page[0]['content']);
+
+        echo $html;
+    ?>
 
 
 </body>

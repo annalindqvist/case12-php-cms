@@ -9,24 +9,20 @@ if(!isset($_SESSION['auth'])) {
     header('Location: signin.php');	
 }
 
-// use Temmplate
-$åage = new Page();
+$page_id = $_GET['id'];
 
-if(isset($_SESSION['firstname'])) {
-    $firstname = $_SESSION['firstname'];
+// use Template
+$page = new Page();
+
+if ($page_id) {
+    $result = $page->deleteOne($page_id);  
+    header("location: pages.php");
+
 } else {
-    // else because all users don't have firstname at this moment
-    $firstname = "";
-}
+    echo "Something went wrong.";
+} 
 
-
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
-
-
-$title = "Dashboard";
+$title = "Delete page";
 
 ?>
 
@@ -40,13 +36,8 @@ $title = "Dashboard";
     <link rel="stylesheet" href="/cms-content/styles/style.css">
 </head>
 <body>
-
-    <?php include ROOT . '/cms-includes/partials/header.php'; ?>
     
+    <?php include ROOT . '/cms-includes/partials/header.php'; ?>
     <h1><?= $title ?></h1>
-    <h2><?= $firstname ?></h2>
-    <a href="signout.php">Sign out</a>
-
-
 </body>
 </html>

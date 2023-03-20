@@ -5,19 +5,16 @@ include_once 'cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 
+// if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
     header('Location: signin.php');	
 }
 
-// use Temmplate
-$åage = new Page();
+// use Template
+$page = new Page();
 
-if(isset($_SESSION['firstname'])) {
-    $firstname = $_SESSION['firstname'];
-} else {
-    // else because all users don't have firstname at this moment
-    $firstname = "";
-}
+$result = $page->selectAll();
+
 
 
 // use Database
@@ -26,7 +23,7 @@ if(isset($_SESSION['firstname'])) {
 // $database = new Database();
 
 
-$title = "Dashboard";
+$title = "Pages";
 
 ?>
 
@@ -42,10 +39,30 @@ $title = "Dashboard";
 <body>
 
     <?php include ROOT . '/cms-includes/partials/header.php'; ?>
-    
     <h1><?= $title ?></h1>
-    <h2><?= $firstname ?></h2>
-    <a href="signout.php">Sign out</a>
+
+    <a href="create_page.php">Add new page</a>
+    <?php
+
+    function print_ul_li($result)
+    {
+        echo "<ul>";
+        foreach ($result as $page) {
+            $id = $page['page_id'];
+            echo "<li>
+                    <p>", $page['page_name'], "</p>
+                    <div>
+                    <a href='delete_page.php?id=$id'>Delete</a>
+                    <a href='edit_page.php?id=$id'>Edit</a>
+                    <a href='view_page.php?id=$id'>View</a>
+                    </div>
+                 </li>";
+        }
+        echo "</ul>";
+    }
+    print_ul_li($result);
+
+    ?>
 
 
 </body>

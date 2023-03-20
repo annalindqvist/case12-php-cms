@@ -3,10 +3,15 @@ declare(strict_types=1);
 session_start();
 include_once 'cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
-include_once ROOT . '/cms-includes/models/Template.php';
+include_once ROOT . '/cms-includes/models/User.php';
+
+// if already logged in - go to index.php
+if(isset($_SESSION['auth'])) {
+    header('Location: index.php');	
+}
 
 // use Temmplate
-$template = new Template();
+$template = new User();
 
 // use Database
 // klassen protected - kan inte nå åtkomst
@@ -18,23 +23,27 @@ $title = "Login";
 if ($_POST) {
     // print_r($_POST);
     
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
 
     if ($email == "" || $password == "") {
         echo "Password or email field is empty.";
 
     } else {
-        $result = $template->findOne($email, $password);
+        $result = $template->findOneEmail($email);
         echo "Result from db: " . print_r($result);
 
         if(is_array($result) && !empty($result)) {
             foreach ($result as $row) {
-                $validuser = $row['email'];
-                $_SESSION['auth'] = true;
-                $_SESSIOM['validuser'] = $validuser;
-                $_SESSION['firstname'] = $row['firstname'];
-                $_SESSION['lastname'] = $row['lastname'];
+                if (password_verify($password, $row['password'])){
+                    $validuser = $row['email'];
+                    $_SESSION['auth'] = true;
+                    $_SESSIOM['validuser'] = $validuser;
+                    $_SESSION['firstname'] = $row['firstname'];
+                    $_SESSION['lastname'] = $row['lastname'];
+                    $_SESSION['user_id'] = $row['user_id'];
+                    // add if user is admin or not 
+                }
             }
             echo print_r($_SESSION);
 		} else {
@@ -65,11 +74,7 @@ if ($_POST) {
     <h1><?= $title ?></h1>
     <a href="signup.php">Sign up</a>
 
-    <?php
-    new DisplayDBVersion();
-    // $result = $template->selectAll();
-    // print_r($result);
-    ?>
+  
 
     <form action="" method="post">
         <label for="email">Email</label>

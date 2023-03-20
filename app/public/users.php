@@ -3,21 +3,17 @@ declare(strict_types=1);
 session_start();
 include_once 'cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
-include_once ROOT . '/cms-includes/models/Page.php';
+include_once ROOT . '/cms-includes/models/User.php';
 
+// if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
     header('Location: signin.php');	
 }
 
 // use Temmplate
-$åage = new Page();
+$user = new User();
 
-if(isset($_SESSION['firstname'])) {
-    $firstname = $_SESSION['firstname'];
-} else {
-    // else because all users don't have firstname at this moment
-    $firstname = "";
-}
+
 
 
 // use Database
@@ -26,7 +22,7 @@ if(isset($_SESSION['firstname'])) {
 // $database = new Database();
 
 
-$title = "Dashboard";
+$title = "Users";
 
 ?>
 
@@ -42,10 +38,27 @@ $title = "Dashboard";
 <body>
 
     <?php include ROOT . '/cms-includes/partials/header.php'; ?>
-    
     <h1><?= $title ?></h1>
-    <h2><?= $firstname ?></h2>
-    <a href="signout.php">Sign out</a>
+    <?php
+
+    $result = $user->selectAll();
+    //print_r($result);
+
+    function print_ul_li($result)
+    {
+        echo "<ul>";
+        foreach ($result as $user) {
+            echo "<li>", 
+                    "<p> Firstname: ", $user['firstname'], "</p>",
+                    "<p> Lastname: ", $user['lastname'], "</p>",
+                    "<p> Email: ", $user['email'],  "</p>",
+                 "</li>";
+        }
+        echo "</ul>";
+    }
+    print_ul_li($result);
+
+    ?>
 
 
 </body>
