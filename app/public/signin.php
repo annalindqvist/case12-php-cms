@@ -38,7 +38,7 @@ if ($_POST) {
                 if (password_verify($password, $row['password'])){
                     $validuser = $row['email'];
                     $_SESSION['auth'] = true;
-                    $_SESSIOM['validuser'] = $validuser;
+                    $_SESSION['admin'] = ($row['admin'] == 1) ? "admin" : "user";
                     $_SESSION['firstname'] = $row['firstname'];
                     $_SESSION['lastname'] = $row['lastname'];
                     $_SESSION['user_id'] = $row['user_id'];

@@ -105,12 +105,16 @@ class Page extends Database
     // }
 
     // updatera
-    public function updateOne($content, $page_name, $id)
+    public function updateOne($page_content, $page_name, $page_id)
     {
-        $sql = "UPDATE template SET content = :content, page_name = :page_name WHERE page_id = :id";
+        $timestamp = date('Y-m-d H:i:s');
+        $sql = "UPDATE page SET content = :page_content, page_name = :page_name, updated_at = :timestamp WHERE page_id = :page_id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':page_name', $page_name, PDO::PARAM_INT);
-        $stmt->bindValue(':content', $content, PDO::PARAM_STR);
+        $stmt->bindValue(':page_name', $page_name, PDO::PARAM_STR);
+        $stmt->bindValue(':page_content', $page_content, PDO::PARAM_STR);
+        $stmt->bindValue(':timestamp', $timestamp, PDO::PARAM_STR);
+        $stmt->bindValue(':page_id', $page_id, PDO::PARAM_INT);
+
         return $stmt->execute();
     }
 

@@ -12,35 +12,43 @@ if(!isset($_SESSION['auth'])) {
 // use Temmplate
 $page = new Page();
 
-$chosen_page_id = $_GET['id'];
+// check if user is admin - if not not rights to edit
 
-if ($chosen_page_id) {
-    $chosen_page = $page->findOne($chosen_page_id);
+if (isset($_GET['id'])) {
+
+    $page_id = $_GET['id'];
+    $page_result = $page->findOne($page_id);
+    print_r($page_result);
    
-    foreach ($chosen_page as $row) {
-            $page_title = $row['page_name'];
+    foreach ($page_result as $row) {
+            $page_name = $row['page_name'];
             $page_content = $row['content'];
             $page_id = $row['page_id'];
         }
-} else {
-    echo "Something went wrong.";
-} 
 
-echo $page_id;
-// THE PAGE ID IS GONE AFTR SUBMITTING FORM - find the best way to get it.
-// input hidden with value of id? 
-// must be another way?
+    echo $page_content; 
+} 
+// This else will happen after submitting this form?
+// else {
+   // echo "Something went wrong.";
+    //header("location: pages.php");
+    
+//} 
 
 if ($_POST) {
-    $form_content = trim($_POST["content"]);
+
+    // get the updated content
+    $page_content = trim($_POST["content"]);
     $page_name = trim($_POST["page_name"]);
+    $page_id = trim($_POST["id"]);
 
-    // Check if there is any content
-    if (!empty($form_content) || !empty($page_name)) {
-        // Prepare sql query to insert new journal entry
-        $result = $page->updateOne($form_content, $page_name, $page_id);
-        header("location: pages.php");
-
+    if (empty($page_id) || !is_int($page_id)){
+        // Check if there is any content
+        if (!empty($page_content) || !empty($page_name)) {
+            // Prepare sql query to insert new journal entry
+            $result = $page->updateOne($page_content, $page_name, $page_id);
+            header("location: pages.php");
+        }
     } else {
         echo "Please fill in any content before saving to the database.";
     }
@@ -69,11 +77,11 @@ $title = "Edit page";
     <h1><?= $title ?></h1>
    
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <input type="number" name="id" id="id" value=<?= $page_id?> hidden>
         <label for="page_name">Name of page</label>
-        <input type="text" name="page_name" id="page_name" value=<?= $page_content?>>
+        <input type="text" name="page_name" id="page_name" value=<?= $page_name?>>
         <label for="content">Content</label>
-        <textarea name="content" id="content" cols="30" rows="10" <?= $page_content?>>
-        </textarea>
+        <textarea name="content" id="content" cols="30" rows="10"><?php echo $page_content ?></textarea>
         
         <input type="submit" value="submit">
     </form>

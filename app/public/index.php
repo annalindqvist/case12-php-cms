@@ -45,6 +45,14 @@ $title = "Dashboard";
     
     <h1><?= $title ?></h1>
     <h2><?= $firstname ?></h2>
+    <h2><?php 
+        echo $_SESSION['admin'];
+    // if ($_SESSION['admin'] == 1){
+    //     echo "true", $_SESSION['admin'];
+    // } else {
+    //     echo "false", $_SESSION['admin'];
+    
+     ?></h2>
     <a href="signout.php">Sign out</a>
 
 

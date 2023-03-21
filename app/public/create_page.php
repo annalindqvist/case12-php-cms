@@ -51,9 +51,7 @@ $title = "Crete new page";
         <label for="page_name">Name of page</label>
         <input type="text" name="page_name" id="page_name">
         <label for="content">Content</label>
-        <textarea name="content" id="content" cols="30" rows="10">
-        </textarea>
-        
+        <textarea name="content" id="content" cols="30" rows="10"></textarea>
         <input type="submit" value="submit">
     </form>
 
