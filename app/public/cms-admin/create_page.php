@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 session_start();
-include_once 'cms-config.php';
+include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 
@@ -16,15 +16,21 @@ if ($_POST) {
     $form_content = trim($_POST["content"]);
     $page_name = trim($_POST["page_name"]);
     $user_id = $_SESSION['user_id'];
+    $visibility = ($_POST['visibility'] == "Publish") ? 1 : 0;
 
     // Check if there is any content
     if (!empty($form_content) || !empty($page_name)) {
         // Prepare sql query to insert new journal entry
-        $result = $page->insertOne($form_content, $user_id, $page_name);
-        header("location: index.php");
+        $result = $page->insertOne($form_content, $user_id, $page_name, $visibility);
+
+        $_SESSION['message'] = "Page created successfully!";
+        header("location: pages.php");
+        exit();
 
     } else {
-        echo "Please fill in any content before saving to the database.";
+        $_SESSION['message'] = "Please fill in content and name of page before saving to the database.";
+        header("location: create_page.php");
+        exit();
     }
 }  
 
@@ -44,7 +50,14 @@ $title = "Crete new page";
 <body>
 
     <?php include ROOT . '/cms-includes/partials/header.php'; ?>
-    
+    <hr>
+    <?php 
+    // Session message
+    if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
+        echo "<div><p>". $_SESSION['message'] . "</p></div>";
+        unset( $_SESSION['message']);
+    }
+    ?>
     <h1><?= $title ?></h1>
    
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -52,6 +65,13 @@ $title = "Crete new page";
         <input type="text" name="page_name" id="page_name">
         <label for="content">Content</label>
         <textarea name="content" id="content" cols="30" rows="10"></textarea>
+
+        <input type="radio" id="Draft" name="visibility" value="Draft" checked>
+        <label for="Draft">Draft</label><br>
+
+        <input type="radio" id="Publish" name="visibility" value="Publish">
+        <label for="Publish">Publish</label><br>
+
         <input type="submit" value="submit">
     </form>
 

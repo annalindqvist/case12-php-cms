@@ -1,18 +1,19 @@
 <?php
 declare(strict_types=1);
 session_start();
-include_once 'cms-config.php';
+include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
-include_once ROOT . '/cms-includes/models/User.php';
+include_once ROOT . '/cms-includes/models/Page.php';
 
 // if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
     header('Location: signin.php');	
 }
 
-// use Temmplate
-$user = new User();
+// use Template
+$page = new Page();
 
+$result = $page->selectAll();
 
 
 
@@ -22,7 +23,7 @@ $user = new User();
 // $database = new Database();
 
 
-$title = "Users";
+$title = "Pages";
 
 ?>
 
@@ -38,21 +39,33 @@ $title = "Users";
 <body>
 
     <?php include ROOT . '/cms-includes/partials/header.php'; ?>
+    <hr>
+    <?php 
+    // Session message
+    if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
+        echo "<div><p>". $_SESSION['message'] . "</p></div>";
+        unset( $_SESSION['message']);
+    }
+    ?>
     <h1><?= $title ?></h1>
-    <?php
 
-    $result = $user->selectAll();
-    //print_r($result);
+    <a href="create_page.php">Add new page</a>
+    <?php
 
     function print_ul_li($result)
     {
         echo "<ul>";
-        foreach ($result as $user) {
-            echo "<li>", 
-                    "<p> Firstname: ", $user['firstname'], "</p>",
-                    "<p> Lastname: ", $user['lastname'], "</p>",
-                    "<p> Email: ", $user['email'],  "</p>",
-                 "</li>";
+        foreach ($result as $page) {
+            // $id = $page['page_id'];
+            $page_name = $page['page_name'];
+            echo "<li>
+                    <p>", $page['page_name'], "</p>
+                    <div>
+                    <a href='delete_page.php?id=$page_name'>Delete</a>
+                    <a href='edit_page.php?id=$page_name'>Edit</a>
+                    <a href='page_preview.php?id=$page_name'>Preview page</a>
+                    </div>
+                 </li>";
         }
         echo "</ul>";
     }

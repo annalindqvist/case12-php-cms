@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 session_start();
-include_once 'cms-config.php';
+include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/User.php';
 
 // if already logged in - go to index.php
 if(isset($_SESSION['auth'])) {
-    header('Location: index.php');	
+    header('Location: dashboard.php');	
 }
 
 // use Temmplate
@@ -21,8 +21,7 @@ $template = new User();
 $title = "Login";
 
 if ($_POST) {
-    // print_r($_POST);
-    
+ 
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
@@ -38,7 +37,7 @@ if ($_POST) {
                 if (password_verify($password, $row['password'])){
                     $validuser = $row['email'];
                     $_SESSION['auth'] = true;
-                    $_SESSION['admin'] = ($row['admin'] == 1) ? "admin" : "user";
+                    $_SESSION['position'] = ($row['position'] == 1) ? "admin" : "user";
                     $_SESSION['firstname'] = $row['firstname'];
                     $_SESSION['lastname'] = $row['lastname'];
                     $_SESSION['user_id'] = $row['user_id'];
@@ -47,17 +46,17 @@ if ($_POST) {
             }
             echo print_r($_SESSION);
 		} else {
-			echo "Invalid username or password.";
+            $_SESSION['message'] = "Invalid username or password.";
+            header('Location: signin.php');	
+            exit();
 		}
         if(isset($_SESSION['auth'])) {
-			header('Location: index.php');	
-		}
-
+            $_SESSION['message'] = "Successfully signed in!";
+			header('Location: dashboard.php');	
+            exit();
+		} 
     }
-    
-    
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -72,9 +71,15 @@ if ($_POST) {
 <body>
     
     <h1><?= $title ?></h1>
-    <a href="signup.php">Sign up</a>
+    <a href="/cms-admin/signup.php">Sign up</a>
 
-  
+    <?php 
+    // Session message
+    if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
+        echo "<div><p>". $_SESSION['message'] . "</p></div>";
+        unset( $_SESSION['message']);
+    }
+    ?>
 
     <form action="" method="post">
         <label for="email">Email</label>

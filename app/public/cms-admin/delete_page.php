@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 session_start();
-include_once 'cms-config.php';
+include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 
@@ -9,14 +9,16 @@ if(!isset($_SESSION['auth'])) {
     header('Location: signin.php');	
 }
 
-$page_id = $_GET['id'];
+$page_name = $_GET['id'];
 
 // use Template
 $page = new Page();
 
-if ($page_id) {
-    $result = $page->deleteOne($page_id);  
+if ($page_name) {
+    $result = $page->deleteOne($page_name);
+    $_SESSION['message'] = "Successfully deleted page.";
     header("location: pages.php");
+    exit();
 
 } else {
     echo "Something went wrong.";

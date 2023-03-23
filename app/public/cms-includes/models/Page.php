@@ -13,7 +13,7 @@ class Page extends Database
     {
         $schema = "CREATE TABLE IF NOT EXISTS `mydb`.`page` (
             `page_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            `page_name` VARCHAR(45) NOT NULL,
+            `page_name` VARCHAR(45) NOT NULL UNIQUE,
             `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
             `updated_at` TIMESTAMP NULL,
             `published` TINYINT(1) NOT NULL,
@@ -32,8 +32,6 @@ class Page extends Database
         return $stmt->execute();
     }
 
-    // här följer olika exempel där placeholders används för att undvika SQL injections
-    
     public function selectAll()
     {
         $sql = "SELECT * FROM page";
@@ -43,6 +41,25 @@ class Page extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+   
+
+    public function selectAllPublished()
+    {
+        $sql = "SELECT * FROM page WHERE published = 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function selectAllDrafts()
+    {
+        $sql = "SELECT * FROM page WHERE published = 0";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     // public function selectAllOrderBy($column = 'information', $asc = true)
     // {
@@ -74,7 +91,6 @@ class Page extends Database
     {
 
         try {
-            //code...
             // PUBLISHED SHOULD COME FROM FORM
             $sql = "INSERT INTO page (content, user_id, page_name, published) VALUES (:content, :user_id, :page_name, 0)";
             $stmt = $this->db->prepare($sql);
@@ -91,11 +107,11 @@ class Page extends Database
         }
     }
 
-    public function deleteOne($id)
+    public function deleteOne($page_name)
     {
-        $sql = "DELETE FROM page WHERE page_id = :id";
+        $sql = "DELETE FROM page WHERE page_name = :page_name";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':page_name', $page_name, PDO::PARAM_STR);
         return $stmt->execute();
     } 
 
@@ -105,22 +121,34 @@ class Page extends Database
     // }
 
     // updatera
-    public function updateOne($page_content, $page_name, $page_id)
+    public function updateOne($page_content, $page_name, $page_id, $visibility)
     {
         $timestamp = date('Y-m-d H:i:s');
-        $sql = "UPDATE page SET content = :page_content, page_name = :page_name, updated_at = :timestamp WHERE page_id = :page_id";
+        $sql = "UPDATE page SET content = :page_content, page_name = :page_name, updated_at = :timestamp, published = :visibility WHERE page_id = :page_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':page_name', $page_name, PDO::PARAM_STR);
         $stmt->bindValue(':page_content', $page_content, PDO::PARAM_STR);
         $stmt->bindValue(':timestamp', $timestamp, PDO::PARAM_STR);
         $stmt->bindValue(':page_id', $page_id, PDO::PARAM_INT);
+        $stmt->bindValue(':visibility', $visibility, PDO::PARAM_INT);
+
+
 
         return $stmt->execute();
     }
 
-    public function findOne($id)
+    public function findOne($page_name)
     {
-        $sql = "SELECT * FROM page WHERE page_id = '$id'";
+        $sql = "SELECT * FROM page WHERE page_name = '$page_name'";
+        $stmt = $this->db->prepare($sql);
+        //$stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findOnePublished($page_name)
+    {
+        $sql = "SELECT * FROM page WHERE page_name = '$page_name' AND published = 1";
         $stmt = $this->db->prepare($sql);
         //$stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

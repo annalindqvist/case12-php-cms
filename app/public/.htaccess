@@ -1,0 +1,15 @@
+#RewriteEngine On
+#RewriteBase /
+#RewriteCond %{REQUEST_FILENAME} !-d
+
+#RewriteCond %{REQUEST_FILENAME} !-f 
+
+#RewriteRule . /index.php [L]
+
+#RewriteRule ^view_page/([0-9]+)/([0-9a-zA-Z_-]+) view_page.php?id=$1&page_name=$2 [NC,L]
+
+#RewriteCond %{REQUEST_FILENAME} !-d
+
+#RewriteCond %{REQUEST_FILENAME}\.php -f 
+
+#RewriteRule ^cms-admin/edit_page/([0-9]+)/([0-9a-zA-Z_-]+) cms-admin/edit_page.php?id=$1 [NC,L]

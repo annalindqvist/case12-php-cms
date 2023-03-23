@@ -2,21 +2,21 @@
 I caset ska en applikation kodas som lagrar data i en relationsdatabas. Applikationen fungerar för att en administratör ska kunna skriva och publicera enklare sidor eller blogg-inlägg förslagsvis kallad `Page`.
 
 ## Grundläggande krav
-- Programspråk som får användas är PHP (utan ramverk), Javascript, HTML/CSS [x]
+- [x] Programspråk som får användas är PHP (utan ramverk), Javascript, HTML/CSS
 - Visa alla hemsidor som är publicerade genom applikationen
-- Sidor skall återfinnas i en enkel meny
+- [x] Sidor skall återfinnas i en enkel meny
 - Administratör skall kunna:
-  - Loggas in [x]
-  - Registera sig [x]
-  - Läsa, skapa, editera och ta bort resurs
-  - Lösenordet skall vara kryperad innan det lagras i databasen [x]
+ [x] - Loggas in 
+ [x] - Registera sig 
+ [x] - Läsa, skapa, editera och ta bort resurs 
+ [x] - Lösenordet skall vara kryperad innan det lagras i databasen 
 - Pages tabellen skall:
-  - Ha minst fyra databas-kolumner utöver primary key (t.ex title, content, created_at, site_id) [x]
-  - Vara länkad på databasnivå till en användare [x]
-  - Hantera markdown (Det fungerar att spara ner det som text och låta klienten parsa markdown till html) [x]
+ [x] - Ha minst fyra databas-kolumner utöver primary key (t.ex title, content, created_at, site_id)
+ [x] - Vara länkad på databasnivå till en användare 
+ [x] - Hantera markdown (Det fungerar att spara ner det som text och låta klienten parsa markdown till html) 
 - Besökare skall kunna:
-  - Besöka olika sidor t.ex "thewebapp.com?id=about" och "thewebapp.com?id=contact" alternativt med friendly urls "thewebapp.com/page/about" och "thewebapp.com/page/contact"
-  
+ [x] - Besöka olika sidor t.ex "thewebapp.com?id=about" och "thewebapp.com?id=contact" alternativt med friendly urls "thewebapp.com/page/about" och "thewebapp.com/page/contact" 
+ 
 ## Utmaning
 Utöver alla grundläggande krav:
 - Applikationen ska vara publicerad via Linode eller liknande hosting tjänst

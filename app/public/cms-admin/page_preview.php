@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 session_start();
-include_once 'cms-config.php';
+include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
-require_once "Parsedown.php";
+require_once "../Parsedown.php";
 
 
 
@@ -15,8 +15,8 @@ $page_name = $_GET['id'];
 $page = new Page();
 
 if ($page_name) {
-    $all_pages = $page->selectAllPublished();
-    $chosen_page = $page->findOnePublished($page_name);
+    $all_pages = $page->selectAll();
+    $chosen_page = $page->findOne($page_name);
 
 } else {
     echo "Something went wrong.";
@@ -66,7 +66,7 @@ $title = "The website";
             // $id = $page['page_id'];
             $page_name = $page['page_name'];
             echo "<li>", 
-                    "<a href='view_page.php?id=$page_name'>", $page['page_name'], "</a>",
+                    "<a href='page_preview.php?id=$page_name'>", $page['page_name'], "</a>",
                  "</li>";
         }
         echo "</ul>";

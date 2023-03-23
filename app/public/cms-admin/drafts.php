@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 session_start();
-include_once 'cms-config.php';
+include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 
@@ -13,7 +13,7 @@ if(!isset($_SESSION['auth'])) {
 // use Template
 $page = new Page();
 
-$result = $page->selectAll();
+$result = $page->selectAllDrafts();
 
 
 
@@ -23,7 +23,7 @@ $result = $page->selectAll();
 // $database = new Database();
 
 
-$title = "Pages";
+$title = "Drafts";
 
 ?>
 
@@ -39,6 +39,14 @@ $title = "Pages";
 <body>
 
     <?php include ROOT . '/cms-includes/partials/header.php'; ?>
+    <hr>
+    <?php 
+    // Session message
+    if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
+        echo "<div><p>". $_SESSION['message'] . "</p></div>";
+        unset( $_SESSION['message']);
+    }
+    ?>
     <h1><?= $title ?></h1>
 
     <a href="create_page.php">Add new page</a>
@@ -48,13 +56,14 @@ $title = "Pages";
     {
         echo "<ul>";
         foreach ($result as $page) {
-            $id = $page['page_id'];
+            // $id = $page['page_id'];
+            $page_name = $page['page_name'];
             echo "<li>
                     <p>", $page['page_name'], "</p>
                     <div>
-                    <a href='delete_page.php?id=$id'>Delete</a>
-                    <a href='edit_page.php?id=$id'>Edit</a>
-                    <a href='view_page.php?id=$id'>View</a>
+                    <a href='delete_page.php?id=$page_name'>Delete</a>
+                    <a href='edit_page.php?id=$page_name'>Edit</a>
+                    <a href='page_preview.php?id=$page_name'>Preview page</a>
                     </div>
                  </li>";
         }

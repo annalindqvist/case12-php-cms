@@ -14,7 +14,7 @@ class User extends Database
         $schema = "CREATE TABLE IF NOT EXISTS `cms-db`.`user` (
             `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `email` VARCHAR(100) NOT NULL,
-            `password` VARCHAR(45) NOT NULL,
+            `password` VARCHAR(100) NOT NULL,
             `firstname` VARCHAR(45) NOT NULL,
             `lastname` VARCHAR(45) NOT NULL,
             `admin` TINYINT(1) NULL DEFAULT 0,
@@ -37,7 +37,7 @@ class User extends Database
     public function insertOne($email, $hash_pass, $firstname, $lastname)
     {
         try {
-            $sql = "INSERT INTO `user` (`user_id`, `email`, `password`, `firstname`, `lastname`, `admin`) VALUES (NULL, '$email', '$hash_pass', '$firstname', '$lastname', '0')";
+            $sql = "INSERT INTO `user` (`user_id`, `email`, `password`, `firstname`, `lastname`, `position`) VALUES (NULL, '$email', '$hash_pass', '$firstname', '$lastname', '0')";
             $stmt = $this->db->prepare($sql);
             return $stmt->execute();
 
@@ -72,6 +72,14 @@ class User extends Database
     public function findOneEmail($email)
     {
         $sql = "SELECT * FROM user WHERE email='$email'";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findOne($id)
+    {
+        $sql = "SELECT * FROM user WHERE user_id = '$id'";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

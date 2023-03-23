@@ -21,24 +21,23 @@ protected function __construct() {
 }
 }
 
-
-class DisplayDBVersion extends Database 
-{
-function __construct() {
+// class DisplayDBVersion extends Database 
+// {
+// function __construct() {
     
-    // call parent constructor
-    parent::__construct();
+//     // call parent constructor
+//     parent::__construct();
 
-    $query = $this->db->query('SHOW VARIABLES like "version"');
-    $rows = $query->fetch();
+//     $query = $this->db->query('SHOW VARIABLES like "version"');
+//     $rows = $query->fetch();
     
-    echo '<pre>';
-    echo 'Database version: ';
-    foreach ($rows as $key => $value) {    
-        print_r($key . ': ' . $value);
-    }
-    echo '</pre>';
-}
-}
+//     echo '<pre>';
+//     echo 'Database version: ';
+//     foreach ($rows as $key => $value) {    
+//         print_r($key . ': ' . $value);
+//     }
+//     echo '</pre>';
+// }
+// }
 
 ?>
