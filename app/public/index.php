@@ -2,7 +2,7 @@
 
 // echo "hej"; 
 // $path = strtok($_SERVER['REQUEST_URI'], '?');
-// print_r($path);
+// // print_r($path);
 
 // switch ($path) {
 //     case '/':

@@ -1,9 +1,14 @@
 # Case 12 - Fullstack PHP
+
+###### Min Linode-server: http://192.46.239.230/
+###### För att signa in: http://192.46.239.230/cms-admin/signin.php
+
+
 I caset ska en applikation kodas som lagrar data i en relationsdatabas. Applikationen fungerar för att en administratör ska kunna skriva och publicera enklare sidor eller blogg-inlägg förslagsvis kallad `Page`.
 
 ## Grundläggande krav
 - [x] Programspråk som får användas är PHP (utan ramverk), Javascript, HTML/CSS
-- Visa alla hemsidor som är publicerade genom applikationen
+- [x] Visa alla hemsidor som är publicerade genom applikationen
 - [x] Sidor skall återfinnas i en enkel meny
 - Administratör skall kunna:
  [x] - Loggas in 
@@ -19,9 +24,9 @@ I caset ska en applikation kodas som lagrar data i en relationsdatabas. Applikat
  
 ## Utmaning
 Utöver alla grundläggande krav:
-- Applikationen ska vara publicerad via Linode eller liknande hosting tjänst
-- Administratör ska kunna spara Page som draft
-- Sidor ska kunna hantera bilder
+- [x] Applikationen ska vara publicerad via Linode eller liknande hosting tjänst
+- [x] Administratör ska kunna spara Page som draft
+- [x] Sidor ska kunna hantera bilder
 - Sidor skall återfinnas i en hierarkisk meny
 - Integrera en JavaScript WYSIWYG editor för innehållet i content fältet ex. https://editorjs.io/ eller https://www.tiny.cloud/
 - Besökare skall kunna registera sig som intresserad av nyhetsbrev

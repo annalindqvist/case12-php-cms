@@ -6,7 +6,7 @@
 $db_host = "localhost"; // usually: localhost
 $db_name = "cms-db";
 $db_user = "db_user_linode";
-$db_password = "cms-pword";
+$db_password = "db_password_linode";
 
 
 // development, localhost (docker-compose.yml)

@@ -33,7 +33,6 @@ if (isset($_GET['id'])) {
     }
 } 
 
-
 if (isset($_GET['change_to_user'])) {
     $user_id = intval($_GET['change_to_user']);
     $position = 0;
@@ -49,6 +48,10 @@ if (isset($_GET['change_to_user'])) {
         header('Location: users.php');	
         exit();
 
+    } else {
+        $_SESSION['message'] = "Something went wrong.";
+        header('Location: users.php');	
+        exit();
     }
 } 
 if (isset($_GET['change_to_admin'])) {
@@ -66,6 +69,32 @@ if (isset($_GET['change_to_admin'])) {
         header('Location: users.php');	
         exit();
 
+    } else {
+        $_SESSION['message'] = "Something went wrong.";
+        header('Location: users.php');	
+        exit();
+    }
+
+} 
+if (isset($_GET['remove_user'])) {
+    $user_id = intval($_GET['remove_user']);
+    $user_result = $user->deleteOne($user_id);
+
+    if ($user_result) {
+        // if the online user makes removes themselfe
+        if ($_SESSION['user_id'] == $user_id) {
+            $_SESSION['message'] = "Your account has been deleted.";
+            header('Location: signin.php');	
+            exit();
+        } else {
+        $_SESSION['message'] = "User is now deleted.";
+        header('Location: users.php');	
+        exit();
+        }
+    } else {
+        $_SESSION['message'] = "Something went wrong.";
+        header('Location: users.php');	
+        exit();
     }
 } 
 
@@ -109,6 +138,7 @@ $title = "User";
             if($user_position == 'user') {
                 echo "<a href='user.php?change_to_admin=$user_id'>Change position to: admin</a>";
             }
+            echo "<a href='user.php?remove_user=$user_id'>Remove user</a>";
         }
     ?>
 

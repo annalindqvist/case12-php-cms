@@ -11,7 +11,7 @@ class Page extends Database
 
     public function setup()
     {
-        $schema = "CREATE TABLE IF NOT EXISTS `mydb`.`page` (
+        $schema = "CREATE TABLE IF NOT EXISTS `cms-db`.`page` (
             `page_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `page_name` VARCHAR(45) NOT NULL UNIQUE,
             `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
@@ -24,7 +24,7 @@ class Page extends Database
             INDEX `fk_page_user_idx` (`user_id` ASC) VISIBLE,
             CONSTRAINT `fk_page_user`
               FOREIGN KEY (`user_id`)
-              REFERENCES `mydb`.`user` (`user_id`)
+              REFERENCES `cms-db`.`user` (`user_id`)
               ON DELETE NO ACTION
               ON UPDATE NO ACTION)
           ENGINE = InnoDB";
@@ -61,31 +61,6 @@ class Page extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // public function selectAllOrderBy($column = 'information', $asc = true)
-    // {
-
-    //     // avoid sql injection building sql query
-    //     switch ($column) {
-    //         case 'position':
-    //             $sql = "SELECT * FROM template ORDER BY position";
-    //             break;
-    //         case 'id':
-    //             $sql = "SELECT * FROM template ORDER BY id";
-    //             break;
-    //         default:
-    //             $sql = "SELECT * FROM template ORDER BY information";
-    //             break;
-    //     }
-
-    //     $order = $asc === true ? 'ASC' : 'DESC';
-    //     $sql = $sql . " $order"; 
-
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->execute();
-
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // }
-
     // funktion för att lägga till data i tabellen
     public function insertOne($content, $user_id, $page_name, $visibility)
     {
@@ -113,11 +88,6 @@ class Page extends Database
         $stmt->bindValue(':page_name', $page_name, PDO::PARAM_STR);
         return $stmt->execute();
     } 
-
-    // public function deleteMany($array)
-    // {
-    //     // ...
-    // }
 
     // updatera
     public function updateOne($page_content, $page_name, $page_id, $visibility)

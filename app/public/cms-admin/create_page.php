@@ -19,6 +19,7 @@ if($_SESSION['position'] == 'user') {
 }
 
 $page = new Page();
+$setupTable = $page->setup();
 
 if ($_POST) {
     $form_content = trim($_POST["content"]);

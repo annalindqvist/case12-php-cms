@@ -12,14 +12,7 @@ if(isset($_SESSION['auth'])) {
     exit();
 } 
 
-$template = new User();
-
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
-
-$title = "Login";
+$user = new User();
 
 if ($_POST) {
  
@@ -30,8 +23,7 @@ if ($_POST) {
         echo "Password or email field is empty.";
 
     } else {
-        $result = $template->findOneEmail($email);
-        echo "Result from db: " . print_r($result);
+        $result = $user->findOneEmail($email);
 
         if(is_array($result) && !empty($result)) {
             foreach ($result as $row) {
@@ -42,10 +34,8 @@ if ($_POST) {
                     $_SESSION['firstname'] = $row['firstname'];
                     $_SESSION['lastname'] = $row['lastname'];
                     $_SESSION['user_id'] = $row['user_id'];
-                    // add if user is admin or not 
                 }
             }
-            echo print_r($_SESSION);
 		} else {
             $_SESSION['message'] = "Invalid username or password.";
             header('Location: signin.php');	
@@ -58,6 +48,8 @@ if ($_POST) {
 		} 
     }
 }
+
+$title = "Login";
 ?>
 
 <!DOCTYPE html>

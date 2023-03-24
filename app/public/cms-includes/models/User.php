@@ -17,7 +17,7 @@ class User extends Database
             `password` VARCHAR(100) NOT NULL,
             `firstname` VARCHAR(45) NOT NULL,
             `lastname` VARCHAR(45) NOT NULL,
-            `admin` TINYINT(1) NULL DEFAULT 0,
+            `position` TINYINT(1) NULL DEFAULT 0,
             PRIMARY KEY (`user_id`))
           ENGINE = InnoDB";
         $stmt = $this->db->prepare($schema);
@@ -46,18 +46,14 @@ class User extends Database
         }
     }
 
+    // delete user
     public function deleteOne($id)
     {
-        $sql = "DELETE FROM template WHERE id = :id";
+        $sql = "DELETE FROM user WHERE user_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     } 
-
-    // public function deleteMany($array)
-    // {
-    //     // ...
-    // }
 
     // update user
     public function updateOnePosition($id, $position)
@@ -84,23 +80,6 @@ class User extends Database
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
-    // create funtion that match password to found user[email]
-    //  if (password_verify($password, $user['password'])){
-    // public function matchPass($email, $password)
-    // {
-    //     // $sql = "SELECT * FROM user WHERE email='$email' AND password='$password'";
-       
-    //     $sql = "SELECT * FROM user WHERE email='$email'";
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->execute();
-
-
-
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // }
-
 }
 
 
