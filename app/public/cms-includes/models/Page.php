@@ -87,20 +87,19 @@ class Page extends Database
     // }
 
     // funktion för att lägga till data i tabellen
-    public function insertOne($content, $user_id, $page_name)
+    public function insertOne($content, $user_id, $page_name, $visibility)
     {
 
         try {
             // PUBLISHED SHOULD COME FROM FORM
-            $sql = "INSERT INTO page (content, user_id, page_name, published) VALUES (:content, :user_id, :page_name, 0)";
+            $sql = "INSERT INTO page (content, user_id, page_name, published) VALUES (:content, :user_id, :page_name, :visibility)";
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':content', $content, PDO::PARAM_STR);
             $stmt->bindValue(':page_name', $page_name, PDO::PARAM_STR);
             $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-            $stmt->execute();
-    
-            return $this->db->lastInsertId();
-    
+            $stmt->bindValue(':visibility', $visibility, PDO::PARAM_INT);
+
+            return $stmt->execute();
 
         } catch (\Throwable $th) {
             throw $th;
@@ -131,8 +130,6 @@ class Page extends Database
         $stmt->bindValue(':timestamp', $timestamp, PDO::PARAM_STR);
         $stmt->bindValue(':page_id', $page_id, PDO::PARAM_INT);
         $stmt->bindValue(':visibility', $visibility, PDO::PARAM_INT);
-
-
 
         return $stmt->execute();
     }

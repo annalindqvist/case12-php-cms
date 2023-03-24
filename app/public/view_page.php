@@ -24,13 +24,6 @@ if (isset($_GET['id'])) {
     echo "Something went wrong.";
 } 
 
-
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
-
-
 $title = "The website";
 
 ?>

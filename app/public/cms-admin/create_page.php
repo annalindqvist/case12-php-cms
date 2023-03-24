@@ -20,12 +20,14 @@ if ($_POST) {
 
     // Check if there is any content
     if (!empty($form_content) || !empty($page_name)) {
-        // Prepare sql query to insert new journal entry
-        $result = $page->insertOne($form_content, $user_id, $page_name, $visibility);
 
-        $_SESSION['message'] = "Page created successfully!";
-        header("location: pages.php");
-        exit();
+        $result = $page->insertOne($form_content, $user_id, $page_name, $visibility);
+        if ($result) {
+            $_SESSION['message'] = "Page created successfully!";
+            header("location: pages.php");
+            exit();
+        }
+        
 
     } else {
         $_SESSION['message'] = "Please fill in content and name of page before saving to the database.";

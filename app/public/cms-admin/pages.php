@@ -58,8 +58,10 @@ $title = "Pages";
         foreach ($result as $page) {
             // $id = $page['page_id'];
             $page_name = $page['page_name'];
+            
             echo "<li>
                     <p>", $page['page_name'], "</p>
+                    <p>", $visibility = ($page['published'] == 1) ? "Published" : "Draft", "</p>
                     <div>
                     <a href='delete_page.php?id=$page_name'>Delete</a>
                     <a href='edit_page.php?id=$page_name'>Edit</a>

@@ -13,55 +13,62 @@ if(!isset($_SESSION['auth'])) {
 $page = new Page();
 
 // check if user is admin - if not not rights to edit
-echo $_GET['id'];
 
 if (isset($_GET['id'])) {
 
     $page_name = $_GET['id'];
+    echo $page_name;
     $page_result = $page->findOne($page_name);
-    print_r($page_result);
-   
-    foreach ($page_result as $row) {
+    if ($page_result) {
+        foreach ($page_result as $row) {
             $page_name = $row['page_name'];
             $page_content = $row['content'];
             $page_id = $row['page_id'];
             $visibility = ($row['published'] == 1) ? "Publish" : "Draft";
         }
+    } else {
+        $_SESSION['message'] = "Could not find the page, try again later.";
+        header("location: pages.php");
+        exit();
+    }
 
-    echo $page_content; 
-} 
-// This else will happen after submitting this form?
-// else {
-   // echo "Something went wrong.";
-    //header("location: pages.php");
-    
-//} 
+}  
+//else {
+//     $_SESSION['message'] = "TEST Something went wrong, try again later.";
+//     header("location: pages.php");
+//     exit();
+// }
+
 
 if ($_POST) {
 
     // get the updated content
     $page_content = trim($_POST["content"]);
     $page_name = trim($_POST["page_name"]);
-    $page_id = trim($_POST["id"]);
-    $visibility = ($_POST['visibility'] == "Publish") ? 1: 0;
+    $page_id = intval(trim($_POST["id"]));
+    $visibility = ($_POST['visibility'] == "Publish") ? 1 : 0;
 
-    if (empty($page_id) || !is_int($page_id)){
+    if (!empty($page_id) && is_int($page_id) && is_int($visibility)){
         // Check if there is any content
-        if (!empty($page_content) || !empty($page_name)) {
-            // Prepare sql query to insert new journal entry
+        if (strlen($page_content) > 0 && strlen($page_name) > 0) {
             $result = $page->updateOne($page_content, $page_name, $page_id, $visibility);
-            $_SESSION['message'] = "Successfully updated page.";
-            header("location: pages.php");
-            exit();
+            if($result) {
+                $_SESSION['message'] = "Successfully updated page.";
+                header("location: pages.php");
+                exit();
+            }else {
+                $_SESSION['message'] = "Something went wrong, try again later.";
+                header("location: pages.php");
+                exit();
+            }
+        } else {
+            $err = "Make sure all fields are filled in correctly.";
         }
     } else {
-        echo "Please fill in any content before saving to the database.";
+        $err = "Make sure all fields are filled in correctly.";
     }
 }  
   
-
-
-
 $title = "Edit page";
 
 ?>
@@ -91,9 +98,9 @@ $title = "Edit page";
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <input type="number" name="id" id="id" value=<?= $page_id?> hidden>
         <label for="page_name">Name of page</label>
-        <input type="text" name="page_name" id="page_name" value=<?= $page_name?>>
+        <input type="text" name="page_name" id="page_name" value=<?= $page_name?> required>
         <label for="content">Content</label>
-        <textarea name="content" id="content" cols="30" rows="10"><?php echo $page_content ?></textarea>
+        <textarea name="content" id="content" cols="30" rows="10" required><?php echo $page_content ?></textarea>
 
         <input type="radio" id="Draft" name="visibility" value="Draft" <?php if (isset($visibility) && $visibility=="Draft") echo "checked";?>>
         <label for="Draft">Draft</label><br>
@@ -104,6 +111,13 @@ $title = "Edit page";
         <input type="submit" value="submit">
     </form>
 
+    <?php 
+        if(!empty($err)) {
+            echo "<ul>";
+            echo "<li>" . $err . "</li>";
+            echo "</ul>";
+        }
+    ?>
 
 </body>
 </html>
