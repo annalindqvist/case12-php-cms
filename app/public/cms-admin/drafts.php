@@ -7,8 +7,10 @@ include_once ROOT . '/cms-includes/models/Page.php';
 
 // if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You need to sign in to access.";
     header('Location: signin.php');	
-}
+    exit();
+} 
 
 // use Template
 $page = new Page();

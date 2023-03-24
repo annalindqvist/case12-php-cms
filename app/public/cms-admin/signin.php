@@ -5,12 +5,13 @@ include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/User.php';
 
-// if already logged in - go to index.php
+// if already logged in - go to dashboard
 if(isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You are already online";
     header('Location: dashboard.php');	
-}
+    exit();
+} 
 
-// use Temmplate
 $template = new User();
 
 // use Database

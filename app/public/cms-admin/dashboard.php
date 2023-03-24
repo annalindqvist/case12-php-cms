@@ -5,11 +5,12 @@ include_once  '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 
+// if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You need to sign in to access.";
     header('Location: signin.php');	
-}
-
-
+    exit();
+} 
 
 // use Temmplate - not needed? 
 $page = new Page();
@@ -20,13 +21,6 @@ if(isset($_SESSION['firstname'])) {
     // else because all users don't have firstname at this moment
     $firstname = "";
 }
-
-
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
-
 
 $title = "Dashboard";
 

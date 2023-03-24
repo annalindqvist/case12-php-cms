@@ -5,8 +5,14 @@ include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/User.php';
 
-// use Temmplate
-$user_template = new User();
+// if already logged in - go to dashboard
+if(isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You aldready have an account and are online, sign out to create a new account.";
+    header('Location: dashboard.php');	
+    exit();
+}
+
+$user = new User();
 
 $email = null;
 $firstname = null;
@@ -58,14 +64,14 @@ if ($_POST) {
     // if errors in form - print them out - else go on
     if (empty($err)) {
         // check if there is already a user with this email
-        $result = $user_template->findOneEmail($email);
+        $result = $user->findOneEmail($email);
         // if there is a match
         if($result) {
             echo "User already exists";
         } else {
             $hash_pass = password_hash($password, PASSWORD_DEFAULT);
             // returns boolean
-            $register_user = $user_template->insertOne($email, $hash_pass, $firstname, $lastname);
+            $register_user = $user->insertOne($email, $hash_pass, $firstname, $lastname);
             if($register_user) {
                 // add message that all went ok
                 header('Location: signin.php');	

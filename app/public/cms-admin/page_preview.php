@@ -6,7 +6,12 @@ include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 require_once "../Parsedown.php";
 
-
+// if not auth go to signin.php
+if(!isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You need to sign in to access.";
+    header('Location: signin.php');	
+    exit();
+} 
 
 // $page_id = $_GET['id'];
 $page_name = $_GET['id'];
@@ -20,14 +25,7 @@ if ($page_name) {
 
 } else {
     echo "Something went wrong.";
-} 
-
-
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
-
+}
 
 $title = "The website";
 

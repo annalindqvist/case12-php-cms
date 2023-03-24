@@ -7,20 +7,20 @@ include_once ROOT . '/cms-includes/models/User.php';
 
 // if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You need to sign in to access.";
     header('Location: signin.php');	
+    exit();
 }
 
 // use Temmplate
 $user = new User();
 
-
-
-
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
-
+$result = $user->selectAll();
+if (!$result) {
+    $_SESSION['message'] = "Something went wrong.";
+    header('Location: dashboard.php');	
+    exit();
+}
 
 $title = "Users";
 
@@ -49,7 +49,7 @@ $title = "Users";
     <h1><?= $title ?></h1>
     <?php
 
-    $result = $user->selectAll();
+    
     //print_r($result);
 
     function print_ul_li($result)

@@ -5,14 +5,21 @@ include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 
+// if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You need to sign in to access.";
     header('Location: signin.php');	
+    exit();
+}
+// if not admin - no access 
+if($_SESSION['position'] == 'user') {
+    $_SESSION['message'] = "Only admin can create pages.";
+    header('Location: pages.php');	
+    exit();
 }
 
-// use Temmplate
 $page = new Page();
 
-// check if user is admin - if not not rights to edit
 
 if (isset($_GET['id'])) {
 

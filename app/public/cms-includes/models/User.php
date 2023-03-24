@@ -59,13 +59,13 @@ class User extends Database
     //     // ...
     // }
 
-    // updatera
-    public function updateOne($id, $information)
+    // update user
+    public function updateOnePosition($id, $position)
     {
-        $sql = "UPDATE template SET information = :information WHERE id = :id";
+        $sql = "UPDATE user SET position = :position WHERE user_id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':information', $information, PDO::PARAM_STR);
+        $stmt->bindValue(':position', $position, PDO::PARAM_INT);
         return $stmt->execute();
     }
 

@@ -5,11 +5,19 @@ include_once '../cms-config.php';
 include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 
+// if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You need to sign in to access.";
     header('Location: signin.php');	
+    exit();
+} 
+// if not admin - no access 
+if($_SESSION['position'] == 'user') {
+    $_SESSION['message'] = "Only admin can create pages.";
+    header('Location: pages.php');	
+    exit();
 }
 
-// use Temmplate
 $page = new Page();
 
 if ($_POST) {
@@ -27,7 +35,6 @@ if ($_POST) {
             header("location: pages.php");
             exit();
         }
-        
 
     } else {
         $_SESSION['message'] = "Please fill in content and name of page before saving to the database.";

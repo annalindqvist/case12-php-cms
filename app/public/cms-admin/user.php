@@ -6,8 +6,11 @@ include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/User.php';
 require_once "../Parsedown.php";
 
+// if not auth go to signin.php
 if(!isset($_SESSION['auth'])) {
+    $_SESSION['message'] = "You need to sign in to access.";
     header('Location: signin.php');	
+    exit();
 }
 
 
@@ -31,10 +34,40 @@ if (isset($_GET['id'])) {
 } 
 
 
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
+if (isset($_GET['change_to_user'])) {
+    $user_id = intval($_GET['change_to_user']);
+    $position = 0;
+    $user_result = $user->updateOnePosition($user_id, $position);
+
+    if ($user_result) {
+
+        // if the online user makes themself user from admin change the $_SESSION['position']
+        if ($_SESSION['user_id'] == $user_id) {
+            $_SESSION['position'] = 'user';
+        }
+        $_SESSION['message'] = "User position updated to 'user'.";
+        header('Location: users.php');	
+        exit();
+
+    }
+} 
+if (isset($_GET['change_to_admin'])) {
+    $user_id = intval($_GET['change_to_admin']);
+    $position = 1;
+    $user_result = $user->updateOnePosition($user_id, $position);
+
+    if ($user_result) {
+
+        // if the online user makes themself user from admin change the $_SESSION['position']
+        if ($_SESSION['user_id'] == $user_id) {
+            $_SESSION['position'] = 'admin';
+        }
+        $_SESSION['message'] = "User position updated to 'admin'.";
+        header('Location: users.php');	
+        exit();
+
+    }
+} 
 
 
 $title = "User";
@@ -66,7 +99,18 @@ $title = "User";
         <p><?= $user_lastname ?></p>
         <p><?= $user_email ?></p>
         <p><?= $user_position ?></p>
+        
     </div>
+    <?php
+        if($_SESSION['position'] == 'admin'){
+            if($user_position == 'admin') {
+                echo "<a href='user.php?change_to_user=$user_id'>Change position to: user</a>";
+            }
+            if($user_position == 'user') {
+                echo "<a href='user.php?change_to_admin=$user_id'>Change position to: admin</a>";
+            }
+        }
+    ?>
 
 </body>
 </html>
