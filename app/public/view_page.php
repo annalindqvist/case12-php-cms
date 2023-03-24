@@ -9,16 +9,18 @@ require_once "Parsedown.php";
 
 
 // $page_id = $_GET['id'];
-$page_name = $_GET['id'];
+//$page_name = $_GET['id'];
 
 // use Template
 $page = new Page();
 
-if ($page_name) {
+if (isset($_GET['id'])) {
+    $page_name = $_GET['id'];
     $all_pages = $page->selectAllPublished();
     $chosen_page = $page->findOnePublished($page_name);
 
 } else {
+    $all_pages = $page->selectAllPublished();
     echo "Something went wrong.";
 } 
 
@@ -77,9 +79,13 @@ $title = "The website";
     <?php 
         $Parsedown = new Parsedown();
         //print_r($chosen_page); array in array..
-        $html = $Parsedown->text($chosen_page[0]['content']);
-
-        echo $html;
+        if (isset($_GET['id'])) {
+            $html = $Parsedown->text($chosen_page[0]['content']);
+            echo $html;
+        } else {
+            echo "<h1>Page not found</h1>";
+        }
+       
     ?>
 
 
