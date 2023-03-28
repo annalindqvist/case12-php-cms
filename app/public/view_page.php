@@ -16,12 +16,12 @@ $page = new Page();
 
 if (isset($_GET['id'])) {
     $page_name = $_GET['id'];
-    $all_pages = $page->selectAllPublished();
+    $all_pages = $page->selectAllMenuPriority();
     $chosen_page = $page->findOnePublished($page_name);
 
 } else {
-    $all_pages = $page->selectAllPublished();
-    echo "Something went wrong.";
+    $all_pages = $page->selectAllMenuPriority();
+    $start_page = $all_pages[0];
 } 
 
 $title = "The website";
@@ -76,7 +76,8 @@ $title = "The website";
             $html = $Parsedown->text($chosen_page[0]['content']);
             echo $html;
         } else {
-            echo "<h1>Page not found</h1>";
+            $html = $Parsedown->text($start_page['content']);
+            echo $html;
         }
        
     ?>

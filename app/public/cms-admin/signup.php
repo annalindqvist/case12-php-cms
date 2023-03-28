@@ -104,6 +104,8 @@ if ($_POST) {
     
     <h1><?= $title ?></h1>
 
+    <a href="/cms-admin/signin.php">Sign in</a>
+
     <form action="" method="post">
         <label for="email">Email</label>
         <input type="email" name="email" id="email" value="<?php echo $email ?>" required>

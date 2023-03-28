@@ -12,10 +12,23 @@ if(!isset($_SESSION['auth'])) {
     exit();
 }
 
-// use Template
-$page = new Page();
 
-$result = $page->selectAll();
+$page = new Page();
+$all_pages = $page->selectAllPublished();
+
+if ($_POST) {
+
+    $result = $page->menuPriority($_POST);
+    if($result) {
+        $_SESSION['message'] = "Successfully updated menu.";
+        header("location: settings.php");
+        exit();
+    }else {
+        $_SESSION['message'] = "Something went wrong, try again later.";
+        header("location: settings.php");
+        exit();
+    }
+}  
 
 
 
@@ -51,6 +64,34 @@ $title = "Settings";
     ?>
     <h1><?= $title ?></h1>
 
+    
+    <?php
+    function menu_form($all_pages)
+    {
+        $menu_item = 0;
+        echo "<form action='' method='post'>";
+
+        // create select-list foreach page who is published
+        foreach ($all_pages as $page) {
+            $page_name = $page['page_name'];
+            $menu_item++;
+            echo "<label for='$page_name'>" . $page['page_name'] . "</label>",
+                 "<select id='test' name='$page_name'>";
+                    // create option to prioritize the menu items 
+                    for ($i=1; $i <= count($all_pages); $i++) { 
+                       echo "<option value='$i'>" . $i . "</option>";
+                    }
+                
+            echo "</select>";
+        }
+        echo "<input type='submit' value='Submit menu'>
+            </form>";
+    }
+        
+    
+    menu_form($all_pages);
+
+    ?>
    
 
 </body>

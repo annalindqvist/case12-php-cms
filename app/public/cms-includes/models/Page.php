@@ -61,6 +61,19 @@ class Page extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function selectAllMenuPriority()
+    {
+        //$asc = true;
+        $sql = "SELECT * FROM page WHERE published = 1 ORDER BY menu_priority ASC, page_name ASC";
+        //$order = $asc === true ? 'ASC' : 'DESC';
+        // . " $order"
+        $sql = $sql; 
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // funktion för att lägga till data i tabellen
     public function insertOne($content, $user_id, $page_name, $visibility)
     {
@@ -102,6 +115,21 @@ class Page extends Database
         $stmt->bindValue(':visibility', $visibility, PDO::PARAM_INT);
 
         return $stmt->execute();
+    }
+
+    // update menu priority
+    public function menuPriority($data)
+    {
+        foreach ($data as $page_name => $menu_priority) {
+            $sql = "UPDATE page SET menu_priority='$menu_priority' WHERE page_name='$page_name'";
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute();
+            if ($result === FALSE) {
+                return($result);
+            }
+        }
+        return $result;
+    
     }
 
     public function findOne($page_name)
