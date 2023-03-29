@@ -47,7 +47,7 @@ $title = "Dashboard";
     }
     ?>
     
-    <h1><?= $title ?></h1>
+    <h1 class="text-orange-600"><?= $title ?></h1>
     <h2>Hello <?= $firstname ?>!</h2>
 
 

@@ -74,7 +74,6 @@ if (isset($_GET['change_to_admin'])) {
         header('Location: users.php');	
         exit();
     }
-
 } 
 if (isset($_GET['remove_user'])) {
     $user_id = intval($_GET['remove_user']);
@@ -123,6 +122,7 @@ $title = "User";
         unset( $_SESSION['message']);
     }
     ?>
+
     <div>
         <p><?= $user_firstname ?></p>
         <p><?= $user_lastname ?></p>
@@ -132,6 +132,7 @@ $title = "User";
     </div>
     <?php
         if($_SESSION['position'] == 'admin'){
+            echo "<a href='edit_user_info.php?id=$user_id'>Update user information</a>";
             if($user_position == 'admin') {
                 echo "<a href='user.php?change_to_user=$user_id'>Change position to: user</a>";
             }

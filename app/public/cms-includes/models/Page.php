@@ -1,6 +1,5 @@
 <?php
 
-
 class Page extends Database
 {
     function __construct()
@@ -12,22 +11,25 @@ class Page extends Database
     public function setup()
     {
         $schema = "CREATE TABLE IF NOT EXISTS `cms-db`.`page` (
-            `page_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            `page_name` VARCHAR(45) NOT NULL UNIQUE,
-            `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-            `updated_at` TIMESTAMP NULL,
-            `published` TINYINT(1) NOT NULL,
-            `user_id` INT UNSIGNED NOT NULL,
-            `content` TEXT NULL,
+            `page_id` int(10) UNSIGNED NOT NULL,
+            `page_name` varchar(45) NOT NULL,
+            `created_at` timestamp NULL DEFAULT current_timestamp(),
+            `updated_at` timestamp NULL DEFAULT NULL,
+            `published` tinyint(1) NOT NULL,
+            `content` text NOT NULL,
+            `user_id` int(10) UNSIGNED NOT NULL,
+            `menu_priority` int(11) DEFAULT NULL, 
+           
             PRIMARY KEY (`page_id`),
             UNIQUE INDEX `text_UNIQUE` (`page_name` ASC) VISIBLE,
             INDEX `fk_page_user_idx` (`user_id` ASC) VISIBLE,
             CONSTRAINT `fk_page_user`
-              FOREIGN KEY (`user_id`)
-              REFERENCES `cms-db`.`user` (`user_id`)
-              ON DELETE NO ACTION
-              ON UPDATE NO ACTION)
-          ENGINE = InnoDB";
+            FOREIGN KEY (`user_id`)
+            REFERENCES `cms-db`.`user` (`user_id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION)
+            ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+
         $stmt = $this->db->prepare($schema);
         return $stmt->execute();
     }
@@ -40,8 +42,6 @@ class Page extends Database
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-   
 
     public function selectAllPublished()
     {
@@ -63,10 +63,7 @@ class Page extends Database
 
     public function selectAllMenuPriority()
     {
-        //$asc = true;
         $sql = "SELECT * FROM page WHERE published = 1 ORDER BY menu_priority ASC, page_name ASC";
-        //$order = $asc === true ? 'ASC' : 'DESC';
-        // . " $order"
         $sql = $sql; 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -74,12 +71,9 @@ class Page extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // funktion för att lägga till data i tabellen
     public function insertOne($content, $user_id, $page_name, $visibility)
     {
-
         try {
-            // PUBLISHED SHOULD COME FROM FORM
             $sql = "INSERT INTO page (content, user_id, page_name, published) VALUES (:content, :user_id, :page_name, :visibility)";
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':content', $content, PDO::PARAM_STR);
@@ -102,7 +96,6 @@ class Page extends Database
         return $stmt->execute();
     } 
 
-    // updatera
     public function updateOne($page_content, $page_name, $page_id, $visibility)
     {
         $timestamp = date('Y-m-d H:i:s');
@@ -117,7 +110,6 @@ class Page extends Database
         return $stmt->execute();
     }
 
-    // update menu priority
     public function menuPriority($data)
     {
         foreach ($data as $page_name => $menu_priority) {
@@ -129,14 +121,12 @@ class Page extends Database
             }
         }
         return $result;
-    
     }
 
     public function findOne($page_name)
     {
         $sql = "SELECT * FROM page WHERE page_name = '$page_name'";
         $stmt = $this->db->prepare($sql);
-        //$stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -145,12 +135,9 @@ class Page extends Database
     {
         $sql = "SELECT * FROM page WHERE page_name = '$page_name' AND published = 1";
         $stmt = $this->db->prepare($sql);
-        //$stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 }
-
 
 ?>

@@ -12,14 +12,15 @@ class User extends Database
     public function setup()
     {
         $schema = "CREATE TABLE IF NOT EXISTS `cms-db`.`user` (
-            `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            `email` VARCHAR(100) NOT NULL,
-            `password` VARCHAR(100) NOT NULL,
-            `firstname` VARCHAR(45) NOT NULL,
-            `lastname` VARCHAR(45) NOT NULL,
-            `position` TINYINT(1) NULL DEFAULT 0,
+           `user_id` int(10) UNSIGNED NOT NULL,
+            `email` varchar(100) NOT NULL,
+            `password` varchar(100) NOT NULL,
+            `firstname` varchar(45) NOT NULL,
+            `lastname` varchar(45) NOT NULL,
+            `position` tinyint(1) DEFAULT 0,
             PRIMARY KEY (`user_id`))
-          ENGINE = InnoDB";
+            ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+            
         $stmt = $this->db->prepare($schema);
         return $stmt->execute();
     }
@@ -56,6 +57,19 @@ class User extends Database
     } 
 
     // update user
+    public function updateOne($id, $email, $firstname, $lastname)
+    {
+        $sql = "UPDATE user SET email = :email, firstname = :firstname, lastname = :lastname WHERE user_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':firstname', $firstname, PDO::PARAM_STR);
+        $stmt->bindValue(':lastname', $lastname, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
+    // update users position
     public function updateOnePosition($id, $position)
     {
         $sql = "UPDATE user SET position = :position WHERE user_id = :id";
@@ -81,6 +95,5 @@ class User extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-
 
 ?>

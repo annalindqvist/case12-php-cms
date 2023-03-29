@@ -12,7 +12,6 @@ if(!isset($_SESSION['auth'])) {
     exit();
 }
 
-
 $page = new Page();
 $all_pages = $page->selectAllPublished();
 
@@ -28,15 +27,7 @@ if ($_POST) {
         header("location: settings.php");
         exit();
     }
-}  
-
-
-
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
-
+}
 
 $title = "Settings";
 
@@ -79,20 +70,21 @@ $title = "Settings";
                  "<select id='test' name='$page_name'>";
                     // create option to prioritize the menu items 
                     for ($i=1; $i <= count($all_pages); $i++) { 
-                       echo "<option value='$i'>" . $i . "</option>";
+                        if($page['menu_priority'] == $i) {
+                            echo "<option value='$i' selected>" . $i . "</option>";
+                        } else {
+                            echo "<option value='$i'>" . $i . "</option>";
+                        }
                     }
-                
             echo "</select>";
         }
         echo "<input type='submit' value='Submit menu'>
             </form>";
     }
         
-    
     menu_form($all_pages);
 
     ?>
    
-
 </body>
 </html>

@@ -6,12 +6,6 @@ include_once ROOT . '/cms-includes/models/Database.php';
 include_once ROOT . '/cms-includes/models/Page.php';
 require_once "Parsedown.php";
 
-
-
-// $page_id = $_GET['id'];
-//$page_name = $_GET['id'];
-
-// use Template
 $page = new Page();
 
 if (isset($_GET['id'])) {
@@ -43,8 +37,9 @@ $title = "The website";
     <?php 
     if(isset($_SESSION['auth'])) {
         include ROOT . '/cms-includes/partials/topbar.php';
-        echo "<hr>";
+        echo "<div class='h-16'></div>";
     }
+    
     // Session message
     if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
         echo "<div><p>". $_SESSION['message'] . "</p></div>";
@@ -68,7 +63,9 @@ $title = "The website";
     }
     print_ul_li($all_pages);
     ?>
+    <div id="main-content">
 
+    
     <?php 
         $Parsedown = new Parsedown();
         //print_r($chosen_page); array in array..
@@ -81,6 +78,7 @@ $title = "The website";
         }
        
     ?>
+    </div>
 
 
 </body>

@@ -51,8 +51,11 @@ $title = "Drafts";
     ?>
     <h1><?= $title ?></h1>
 
-    <a href="create_page.php">Add new page</a>
     <?php
+
+    if($_SESSION['position'] == 'admin') {
+        echo "<a href'create_page.php'>Add new page</a>";
+    }
 
     function print_ul_li($result)
     {

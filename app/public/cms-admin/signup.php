@@ -13,7 +13,7 @@ if(isset($_SESSION['auth'])) {
 }
 
 $user = new User();
-$setupTable = $user->setup();
+$setup_table = $user->setup();
 
 $email = null;
 $firstname = null;

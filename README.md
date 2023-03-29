@@ -31,6 +31,10 @@ Utöver alla grundläggande krav:
 - Integrera en JavaScript WYSIWYG editor för innehållet i content fältet ex. https://editorjs.io/ eller https://www.tiny.cloud/
 - Besökare skall kunna registera sig som intresserad av nyhetsbrev
  
+## Utöver kraven och utmaningar kan:
+-[x] Kan man enbart skapa/redigare/ta bort en sida om man är registrerad som admin i databasen
+-[x] En admin kan ta bort/uppdatera information om en användare och ändra position på en användare (user/admin).
+
 ## Feedback
 Veckan efter presentation kommer feedback ges under följande rubriker:
 

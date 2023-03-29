@@ -14,16 +14,9 @@ if(!isset($_SESSION['auth'])) {
 
 // use Template
 $page = new Page();
+$setup_page = $page->setup();
 
 $result = $page->selectAll();
-
-
-
-// use Database
-// klassen protected - kan inte nå åtkomst
-// Call to protected Database::__construct() from invalid context
-// $database = new Database();
-
 
 $title = "Pages";
 
@@ -50,10 +43,14 @@ $title = "Pages";
     }
     ?>
     <h1><?= $title ?></h1>
+   
 
-    <a href="create_page.php">Add new page</a>
     <?php
 
+    if($_SESSION['position'] == 'admin') {
+        echo "<a href'create_page.php'>Add new page</a>";
+    }
+    
     function print_ul_li($result)
     {
         echo "<ul>";
@@ -64,10 +61,12 @@ $title = "Pages";
             echo "<li>
                     <p>", $page['page_name'], "</p>
                     <p>", $visibility = ($page['published'] == 1) ? "Published" : "Draft", "</p>
-                    <div>
-                    <a href='delete_page.php?id=$page_name'>Delete</a>
-                    <a href='edit_page.php?id=$page_name'>Edit</a>
-                    <a href='page_preview.php?id=$page_name'>Preview page</a>
+                    <div>";
+                    if($_SESSION['position'] == 'admin') {
+                    echo "<a href='delete_page.php?id=$page_name'>Delete</a>
+                          <a href='edit_page.php?id=$page_name'>Edit</a> ";
+                    }
+                    echo "<a href='page_preview.php?id=$page_name'>Preview page</a>
                     </div>
                  </li>";
         }

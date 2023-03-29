@@ -40,12 +40,6 @@ if (isset($_GET['id'])) {
     }
 
 }  
-//else {
-//     $_SESSION['message'] = "TEST Something went wrong, try again later.";
-//     header("location: pages.php");
-//     exit();
-// }
-
 
 if ($_POST) {
 
