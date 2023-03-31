@@ -98,7 +98,7 @@ if (isset($_GET['remove_user'])) {
 } 
 
 
-$title = "User";
+$title = "User profile";
 
 ?>
 
@@ -111,37 +111,82 @@ $title = "User";
     <title><?php echo $title; ?></title>
     <link rel="stylesheet" href="/cms-content/styles/style.css">
 </head>
-<body>
+<body class="w-screen flex">
 
     <?php include ROOT . '/cms-includes/partials/header.php'; ?>
-    <hr>
+    <main class="bg-blue-100 flex w-full m-6 flex-col space-y-10 p-6 rounded-2xl drop-shadow-sm p">
     <?php 
     // Session message
     if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
-        echo "<div><p>". $_SESSION['message'] . "</p></div>";
+        echo "<div id='session-div' class='fixed top-10 inset-x-0 space-x-2'>
+        <div
+          class='pointer-events-auto mx-auto hidden w-96 max-w-full rounded-lg bg-white bg-clip-padding text-sm shadow-lg shadow-black/5 data-[te-toast-show]:block data-[te-toast-hide]:hidden dark:bg-neutral-600'
+          id='static-example' role='alert' aria-live='assertive' aria-atomic='true' data-te-autohide='false' data-te-toast-init data-te-toast-show>
+          <div class='flex items-center justify-between rounded-t-lg border-b-2 border-blue-500 border-opacity-100 bg-white bg-clip-padding px-4 pt-2.5 pb-2 dark:border-opacity-50 dark:bg-neutral-600'>
+            <p class='font-bold text-neutral-500 dark:text-neutral-200'>Message</p>
+            <div class='flex items-center'><button id='session-msg-btn' type='button'
+                class='ml-2 box-content rounded-none border-none opacity-80 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none'
+                data-te-toast-dismiss aria-label='Close'> <span class='w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25'>
+                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'
+                    stroke-width='1.5'
+                    stroke='currentColor'
+                    class='h-6 w-6'> <path
+                      stroke-linecap='round'
+                      stroke-linejoin='round'
+                      d='M6 18L18 6M6 6l12 12' />
+                  </svg></span></button></div></div> <div class='break-words rounded-b-lg bg-white py-4 px-4 text-neutral-700 dark:bg-neutral-600 dark:text-neutral-200'>"
+                  . $_SESSION['message'] .
+          "</div>
+        </div>
+      </div>";
         unset( $_SESSION['message']);
     }
     ?>
+     <h1 class="text-3xl font-semibold text-blue-800"><?= $title ?></h1>
 
     <div>
-        <p><?= $user_firstname ?></p>
-        <p><?= $user_lastname ?></p>
-        <p><?= $user_email ?></p>
-        <p><?= $user_position ?></p>
-        
+        <div class="flex">
+            <h2 class="mb-2 mr-2 text-lg font-semibold text-gray-900 dark:text-white">Firstname:</h2>
+            <p class="mb-2 text-lg text-gray-900 dark:text-white"><?= $user_firstname ?></p>
+        </div>
+        <div class="flex">
+            <h2 class="mb-2 mr-2 text-lg font-semibold text-gray-900 dark:text-white">Lastname:</h2>
+            <p class="mb-2 text-lg text-gray-900 dark:text-white"><?= $user_lastname ?></p>
+        </div>
+        <div class="flex">
+            <h2 class="mb-2 mr-2 text-lg font-semibold text-gray-900 dark:text-white">Email:</h2>
+            <p class="mb-2 text-lg text-gray-900 dark:text-white"><?= $user_email ?></p>
+        </div>
+        <div class="flex">
+            <h2 class="mb-2 mr-2 text-lg font-semibold text-gray-900 dark:text-white">Position:</h2>
+            <p class="mb-2 text-lg text-gray-900 dark:text-white"><?= $user_position ?></p>
+        </div>
+        <div class="flex flex-col mt-4">
+        <?php
+            if($_SESSION['position'] == 'admin'){
+                echo "<a class='mb-2 text-blue-600 hover:text-blue-700 hover:font-semibold' href='edit_user_info.php?id=$user_id'>Update user information</a>";
+                if($user_position == 'admin') {
+                    echo "<a class='mb-2 text-blue-600 hover:text-blue-700 hover:font-semibold' href='user.php?change_to_user=$user_id'>Change position to: user</a>";
+                }
+                if($user_position == 'user') {
+                    echo "<a class='mb-2 text-blue-600 hover:text-blue-700 hover:font-semibold' href='user.php?change_to_admin=$user_id'>Change position to: admin</a>";
+                }
+
+                echo "<div class='bg-red-300 mt-6 max-w-max rounded-md flex items-center justify-center'>
+                        <a class='py-2 px-4 text-red-600 hover:text-red-700 hover:font-semibold' href='user.php?remove_user=$user_id'>Remove user</a>",
+                     "</div>";
+            }
+        ?>
+        </div>
     </div>
-    <?php
-        if($_SESSION['position'] == 'admin'){
-            echo "<a href='edit_user_info.php?id=$user_id'>Update user information</a>";
-            if($user_position == 'admin') {
-                echo "<a href='user.php?change_to_user=$user_id'>Change position to: user</a>";
-            }
-            if($user_position == 'user') {
-                echo "<a href='user.php?change_to_admin=$user_id'>Change position to: admin</a>";
-            }
-            echo "<a href='user.php?remove_user=$user_id'>Remove user</a>";
-        }
-    ?>
+    </main>
+
+    <script>
+        document.getElementById('session-msg-btn').addEventListener("click", () => {
+            console.log("btnclick")
+            document.getElementById('session-div').style.display = "none";
+        });
+    </script>
 
 </body>
 </html>

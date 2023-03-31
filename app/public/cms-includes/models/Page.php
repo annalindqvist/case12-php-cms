@@ -71,15 +71,16 @@ class Page extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function insertOne($content, $user_id, $page_name, $visibility)
+    public function insertOne($content, $user_id, $page_name, $visibility, $created_with)
     {
         try {
-            $sql = "INSERT INTO page (content, user_id, page_name, published) VALUES (:content, :user_id, :page_name, :visibility)";
+            $sql = "INSERT INTO page (content, user_id, page_name, published, tiny_mce) VALUES (:content, :user_id, :page_name, :visibility, :created_with)";
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':content', $content, PDO::PARAM_STR);
             $stmt->bindValue(':page_name', $page_name, PDO::PARAM_STR);
             $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
             $stmt->bindValue(':visibility', $visibility, PDO::PARAM_INT);
+            $stmt->bindValue(':created_with', $created_with, PDO::PARAM_INT);
 
             return $stmt->execute();
 
@@ -96,16 +97,18 @@ class Page extends Database
         return $stmt->execute();
     } 
 
-    public function updateOne($page_content, $page_name, $page_id, $visibility)
+    public function updateOne($page_content, $page_name, $page_id, $visibility, $created_with)
     {
         $timestamp = date('Y-m-d H:i:s');
-        $sql = "UPDATE page SET content = :page_content, page_name = :page_name, updated_at = :timestamp, published = :visibility WHERE page_id = :page_id";
+        $sql = "UPDATE page SET content = :page_content, page_name = :page_name, updated_at = :timestamp, published = :visibility, tiny_mce = :created_with WHERE page_id = :page_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':page_name', $page_name, PDO::PARAM_STR);
         $stmt->bindValue(':page_content', $page_content, PDO::PARAM_STR);
         $stmt->bindValue(':timestamp', $timestamp, PDO::PARAM_STR);
         $stmt->bindValue(':page_id', $page_id, PDO::PARAM_INT);
         $stmt->bindValue(':visibility', $visibility, PDO::PARAM_INT);
+        $stmt->bindValue(':created_with', $created_with, PDO::PARAM_INT);
+
 
         return $stmt->execute();
     }
