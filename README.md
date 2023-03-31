@@ -1,6 +1,6 @@
 # Case 12 - Fullstack PHP
 
-###### Min Linode-server: http://192.46.239.230/
+###### Min Linode-server: http://192.46.239.230/ (och sidor skapade via detta CMS)
 ###### För att signa in: http://192.46.239.230/cms-admin/signin.php
 
 
@@ -28,12 +28,13 @@ Utöver alla grundläggande krav:
 - [x] Administratör ska kunna spara Page som draft
 - [x] Sidor ska kunna hantera bilder
 - Sidor skall återfinnas i en hierarkisk meny
-- Integrera en JavaScript WYSIWYG editor för innehållet i content fältet ex. https://editorjs.io/ eller https://www.tiny.cloud/
+- [x] Integrera en JavaScript WYSIWYG editor för innehållet i content fältet ex. https://editorjs.io/ eller https://www.tiny.cloud/
 - Besökare skall kunna registera sig som intresserad av nyhetsbrev
  
 ## Utöver kraven och utmaningar kan:
--[x] Kan man enbart skapa/redigare/ta bort en sida om man är registrerad som admin i databasen
--[x] En admin kan ta bort/uppdatera information om en användare och ändra position på en användare (user/admin).
+- [x] Kan man enbart skapa/redigare/ta bort en sida om man är registrerad som admin i databasen
+- [x] En admin kan ta bort/uppdatera information om en användare och ändra position på en användare (user/admin).
+- [x] En användare kan ändra meny-prioritering. (hur menyn skrivs ut)
 
 ## Feedback
 Veckan efter presentation kommer feedback ges under följande rubriker:
