@@ -80,8 +80,7 @@ $title = "Users";
                             // change tgis to user id
                             "<a href='user.php?id=$id'>",
                                 "<p class='text-md font-medium text-gray-900 truncate dark:text-white'>" . $user['firstname'] . " " .$user['lastname'] . "</p>",
-                                "<p class='text-sm text-gray-500 truncate dark:text-gray-400'>" .$user['email'] .  "</p>",
-                                "<p class='text-sm text-gray-500 truncate dark:text-gray-400'>Position: " , ($user['position'] == 1) ? "admin" : "user" . "</p>",
+                                "<p class='text-sm text-gray-500 truncate dark:text-gray-400'>Position: " . (($user['position'] == 1) ? 'admin' : 'user') . "</p>",
                             "</a>",
                         "</li>";
                 }

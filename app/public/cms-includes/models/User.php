@@ -34,11 +34,11 @@ class User extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // add user to db
+    // add user to db - create as admin per default.
     public function insertOne($email, $hash_pass, $firstname, $lastname)
     {
         try {
-            $sql = "INSERT INTO `user` (`user_id`, `email`, `password`, `firstname`, `lastname`, `position`) VALUES (NULL, '$email', '$hash_pass', '$firstname', '$lastname', '0')";
+            $sql = "INSERT INTO `user` (`user_id`, `email`, `password`, `firstname`, `lastname`, `position`) VALUES (NULL, '$email', '$hash_pass', '$firstname', '$lastname', '1')";
             $stmt = $this->db->prepare($sql);
             return $stmt->execute();
 
