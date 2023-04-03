@@ -8,7 +8,6 @@ class User extends Database
         parent::__construct();
     }
 
-    // setup table user if not exists - make sure this code runs in signup.php ?
     public function setup()
     {
         $schema = "CREATE TABLE IF NOT EXISTS `cms-db`.`user` (

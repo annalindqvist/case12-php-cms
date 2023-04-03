@@ -7,6 +7,7 @@
     <title>404</title>
 </head>
 <body>
+    <!-- Never using this unfortunalely.. -->
     <h1>Something went wrong - 404</h1>
 </body>
 </html>
