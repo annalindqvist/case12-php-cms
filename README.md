@@ -3,6 +3,23 @@
 ###### Min Linode-server: http://192.46.239.230/ (och sidor skapade via detta CMS)
 ###### För att signa in: http://192.46.239.230/cms-admin/signin.php
 
+###### För att starta detta projekt lokalt:
+- Clona ner repot och se till att du står i rätt mapp "case12-php-cms"
+- Kör komamandot: "docker compose up" i terminalen
+- Gå till "localhost:8089" 
+- Logga in med:
+ - server: "mysql"
+ - username: "db_user"
+ - password: "db_password"
+- Importera databasfilen som du hittar i mappen "sql-init" (detta för att skapa tabellerna och de tidigare skapade sidorna och användarna)
+- Gå till "localhost:8088/cms-admin/signup.php" för att skapa en användare och logga in!
+
+###### För att logga in och komma åt phpmyadmin på linode-servern:
+- Gå till: http://192.46.239.230/phpmyadmin
+- username: db_user_linode
+- password: db_password_linode
+
+---
 
 I caset ska en applikation kodas som lagrar data i en relationsdatabas. Applikationen fungerar för att en administratör ska kunna skriva och publicera enklare sidor eller blogg-inlägg förslagsvis kallad `Page`.
 
