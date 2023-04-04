@@ -11,7 +11,8 @@
  - server: "mysql"
  - username: "db_user"
  - password: "db_password"
-- Importera databasfilen som du hittar i mappen "app/sql-init" (detta för att skapa tabellerna och de tidigare skapade sidorna och användarna)
+- Om databasen "cms-db" och tabellerna "page" och "user" inte finns där behöver du göra följande:
+ - importera databasfilen som du hittar i mappen "app/sql-init" (detta för att skapa tabellerna och de tidigare skapade sidorna och användarna).
 - Gå till "localhost:8088/cms-admin/signup.php" för att skapa en användare och logga in!
 
 ###### För att logga in och komma åt phpmyadmin på linode-servern:
